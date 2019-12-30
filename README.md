@@ -3,7 +3,7 @@
 
 currently in beta
  
-url: [https://masterkn48.github.io/voice_email/](https://masterkn48.github.io/voice_email/)
+url: [https://masterkn48.github.io/voice_mail/](https://masterkn48.github.io/voice_mail/)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
