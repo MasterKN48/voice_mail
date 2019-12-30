@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./app.css";
+import axios from "axios";
 import Switch from "react-switch";
 import GIF from "./abc.gif";
 const SpeechRecognition =
@@ -16,6 +17,7 @@ function App() {
   const box1 = useRef();
   const box2 = useRef();
   const box3 = useRef();
+  const box4 = useRef();
   const card = useRef();
   const sub = useRef();
   const [mode, setMode] = useState(false);
@@ -24,19 +26,28 @@ function App() {
   const handleClick = e => {
     e.preventDefault();
     setGif(false);
-    if (!data.from || !data.email || !data.subject || !data.body) {
+    if (1 !== 1) {
       setLoad(false);
+      console.log(data);
       alert("All Details are not filled");
     } else {
-      console.log("send", data);
+      console.log("sending");
       setLoad(true);
+      var params = new URLSearchParams();
+      params.append("email", data.email);
+      params.append("from", data.from);
+      params.append("body", data.body);
+      params.append("subject", data.subject);
+      axios
+        .post("https://letsgowithmkn.000webhostapp.com/test.php", params)
+        .then(res => console.log(res))
+        .catch(err => console.error(err));
     }
     // const upperCase =
     //   transcript.charAt(0).toUpperCase() + transcript.substring(1);
     // console.log(upperCase);
   };
   const speakHandleBody = () => {
-    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Body");
     message.lang = "hi-IN";
@@ -44,6 +55,7 @@ function App() {
       console.log("Finished in " + event.elapsedTime + " seconds.");
       let recognition = new SpeechRecognition();
       recognition.start();
+      setGif(true);
       console.log("listening for body");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -53,16 +65,15 @@ function App() {
           body: transcript + ""
         });
         console.log(transcript);
+        setGif(false);
       };
       recognition.onend = () => {
-        setGif(false);
         end();
       };
     };
     synth.speak(message);
   };
   const end = () => {
-    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance(
       "Should i send mail now? Reply in Yes or No"
@@ -72,6 +83,7 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
+      setGif(true);
       console.log("listening for body");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -80,9 +92,11 @@ function App() {
         let str = transcript + "";
         if (str.includes("yes")) {
           console.log(data, "sending mail...");
+          setGif(false);
           return 0;
         } else {
           console.log("Response is no or unusual");
+          setGif(false);
         }
       };
       recognition.onend = () => {
@@ -94,7 +108,6 @@ function App() {
     synth.speak(message);
   };
   const speakHandleSubject = () => {
-    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Subject Line");
     message.lang = "hi-IN";
@@ -103,6 +116,7 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
+      setGif(true);
       console.log("listening for subject");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -112,17 +126,14 @@ function App() {
           subject: transcript + ""
         });
         console.log(transcript);
-      };
-      recognition.onend = () => {
         setGif(false);
-        recognition.stop();
       };
       recognition.stop();
+      setGif(false);
     };
     synth.speak(message);
   };
   const speakHandleEmail = () => {
-    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about receiver email");
     message.lang = "hi-IN";
@@ -131,6 +142,7 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
+      setGif(true);
       console.log("listening for receiver email");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -141,11 +153,9 @@ function App() {
           email: email.replace(/\s/g, "").toLowerCase()
         });
         console.log(transcript);
-      };
-      recognition.onend = () => {
         setGif(false);
-        recognition.stop();
       };
+      setGif(false);
       recognition.stop();
     };
     synth.speak(message);
@@ -171,11 +181,8 @@ function App() {
         });
         console.log(transcript);
       };
-      recognition.onend = () => {
-        setGif(false);
-        recognition.stop();
-      };
       recognition.stop();
+      setGif(false);
     };
     synth.speak(message);
   };
@@ -187,8 +194,8 @@ function App() {
       box1.current.className = "box";
       box2.current.className = "box";
       box3.current.className = "box";
+      box4.current.className = "box";
       card.current.className = "card";
-      sub.current.className = "card";
     } else {
       setMode(true);
       document.body.style.backgroundColor = "#1d1c19";
@@ -196,8 +203,8 @@ function App() {
       box1.current.className = "darkbox";
       box2.current.className = "darkbox";
       box3.current.className = "darkbox";
+      box4.current.className = "darkbox";
       card.current.className = "card darkcard";
-      sub.current.className = "card darkcard";
     }
   };
   return (
@@ -227,7 +234,7 @@ function App() {
               ""
             )}
             <input
-              ref={box1}
+              ref={box4}
               type="email"
               name="from"
               autoFocus
