@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./app.css";
 import Switch from "react-switch";
 
@@ -12,6 +12,11 @@ function App() {
     body: "",
     send: false
   });
+  const box1 = useRef();
+  const box2 = useRef();
+  const box3 = useRef();
+  const card = useRef();
+  const [mode, setMode] = useState(false);
   const [load, setLoad] = useState(false);
   const handleClick = e => {
     e.preventDefault();
@@ -122,19 +127,44 @@ function App() {
     };
     synth.speak(message);
   };
+  const handleChange = mode => {
+    if (mode === false) {
+      setMode(false);
+      document.body.style.backgroundColor = "white";
+      document.body.style.color = "#000";
+      box1.current.className = "box";
+      box2.current.className = "box";
+      box3.current.className = "box";
+      card.current.className = "card";
+    } else {
+      setMode(true);
+      document.body.style.backgroundColor = "#1d1c19";
+      document.body.style.color = "white";
+      box1.current.className = "darkbox";
+      box2.current.className = "darkbox";
+      box3.current.className = "darkbox";
+      card.current.className = "card darkcard";
+    }
+  };
   return (
     <>
       <div className="row">
         <div className="col-lg-1 col-md-1"></div>
         <div className="col-lg-10 col-md-10">
-          <div className="card " align="center">
+          <div className="card" ref={card} align="center">
             <h1>
               Voice Email<sup style={{ fontSize: "10px" }}>beta 0.5</sup>{" "}
-              &nbsp;&nbsp;&nbsp;
-              <Switch onChange={console.log("dark mode")} checked={true} />
             </h1>
+            <div className="col">
+              <div className="row-1"></div>
+              <div className="row-10">
+                <Switch onChange={handleChange} checked={mode}></Switch>
+              </div>
+              <div className="row-1"></div>
+            </div>
             <h6>Click on Fields to talk,and reply after each beap </h6>
             <input
+              ref={box1}
               type="email"
               name="email"
               autoFocus
@@ -147,6 +177,7 @@ function App() {
             ></input>
             <br />
             <input
+              ref={box2}
               type="text"
               name="subject"
               x-webkit-speech="true"
@@ -158,6 +189,7 @@ function App() {
             ></input>
             <br />
             <textarea
+              ref={box3}
               type="text"
               rows="5"
               readOnly

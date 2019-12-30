@@ -16,6 +16,15 @@ button:focus {
   box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
     12px 12px 12px 0 rgba(0, 0, 0, 0.1);
 }
+.darkcard {
+  margin: 2em;
+  background-color: #1d1c19;
+  padding: 0.5em;
+  border: none;
+  border-radius: 0.5em;
+  box-shadow: -12px -12px 12px 0 rgba(0, 0, 0, 0.2),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.1);
+}
 .box {
   margin: 1em;
   padding: 0.5em;
@@ -25,10 +34,26 @@ button:focus {
   box-shadow: -12px -12px 12px 0 rgba(255, 255, 255, 1),
     12px 12px 12px 0 rgba(0, 0, 0, 0.1);
 }
+.darkbox {
+  margin: 1em;
+  padding: 0.5em;
+  background-color: #1d1c19;
+  border-radius: 0.7em;
+  border: 0px solid #ccc;
+  box-shadow: -12px -12px 12px 0 rgba(0, 0, 0, 0.2),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.1);
+}
 .btns {
   border-radius: 0.5em;
   border: 1px solid #ccc;
   padding: 0.3em;
   box-shadow: -8px -8px -8px 0 rgba(255, 255, 255, 1),
+    12px 12px 12px 0 rgba(0, 0, 0, 0.03);
+}
+.darkbtns {
+  border-radius: 0.5em;
+  border: 1px solid #ccc;
+  padding: 0.3em;
+  box-shadow: -8px -8px -8px 0 rgba(0, 0, 0, 0.2),
     12px 12px 12px 0 rgba(0, 0, 0, 0.03);
 }
