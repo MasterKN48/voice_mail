@@ -1,12 +1,12 @@
 body {
   background-color: #efeeee;
 }
-/* input:focus,
+input:focus,
 select:focus,
 textarea:focus,
 button:focus {
   outline: none;
-} */
+}
 .card {
   margin: 2em;
   background-color: #efeeee;

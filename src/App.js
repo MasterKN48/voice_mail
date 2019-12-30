@@ -7,6 +7,7 @@ const SpeechRecognition =
 
 function App() {
   const [data, setData] = useState({
+    from: "",
     email: "",
     subject: "",
     body: "",
@@ -23,8 +24,13 @@ function App() {
   const handleClick = e => {
     e.preventDefault();
     setGif(false);
-    console.log("send", data);
-    setLoad(true);
+    if (!data.from || !data.email || !data.subject || !data.body) {
+      setLoad(false);
+      alert("All Details are not filled");
+    } else {
+      console.log("send", data);
+      setLoad(true);
+    }
     // const upperCase =
     //   transcript.charAt(0).toUpperCase() + transcript.substring(1);
     // console.log(upperCase);
@@ -144,6 +150,35 @@ function App() {
     };
     synth.speak(message);
   };
+  const speakHandleEmailFrom = () => {
+    setGif(true);
+    let synth = window.speechSynthesis;
+    let message = new SpeechSynthesisUtterance("Tell me about Your email");
+    message.lang = "hi-IN";
+    message.onend = function(event) {
+      console.log("Finished in " + event.elapsedTime + " seconds.");
+      let recognition = new SpeechRecognition();
+      recognition.lang = "en-GB";
+      recognition.start();
+      console.log("listening for your email");
+      recognition.onresult = e => {
+        const current = e.resultIndex;
+        const transcript = e.results[current][0].transcript;
+        let email = transcript + "";
+        setData({
+          ...data,
+          from: email.replace(/\s/g, "").toLowerCase()
+        });
+        console.log(transcript);
+      };
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
+      recognition.stop();
+    };
+    synth.speak(message);
+  };
   const handleChange = mode => {
     if (mode === false) {
       setMode(false);
@@ -194,12 +229,23 @@ function App() {
             <input
               ref={box1}
               type="email"
+              name="from"
+              autoFocus
+              className="box"
+              x-webkit-speech="true"
+              placeholder="Enter Your Email"
+              defaultValue={data.from}
+              onClick={speakHandleEmailFrom}
+            ></input>
+            <br />
+            <input
+              ref={box1}
+              type="email"
               name="email"
               autoFocus
               className="box"
-              readOnly
               x-webkit-speech="true"
-              placeholder="Enter Email"
+              placeholder="Enter Receiver Email"
               defaultValue={data.email}
               onClick={speakHandleEmail}
             ></input>
@@ -209,7 +255,6 @@ function App() {
               type="text"
               name="subject"
               x-webkit-speech="true"
-              readOnly
               className="box"
               placeholder="Enter Subject"
               defaultValue={data.subject}
@@ -220,7 +265,6 @@ function App() {
               ref={box3}
               type="text"
               rows="5"
-              readOnly
               className="box"
               x-webkit-speech="true"
               name="body"
