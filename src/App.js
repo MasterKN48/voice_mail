@@ -16,11 +16,13 @@ function App() {
   const box2 = useRef();
   const box3 = useRef();
   const card = useRef();
+  const submit = useRef();
   const [mode, setMode] = useState(false);
   const [gif, setGif] = useState(false);
   const [load, setLoad] = useState(false);
   const handleClick = e => {
     e.preventDefault();
+    setGif(false);
     console.log("send", data);
     setLoad(true);
     // const upperCase =
@@ -47,8 +49,8 @@ function App() {
         console.log(transcript);
       };
       recognition.onend = () => {
-        end();
         setGif(false);
+        end();
       };
     };
     synth.speak(message);
@@ -105,8 +107,11 @@ function App() {
         });
         console.log(transcript);
       };
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
       recognition.stop();
-      setGif(false);
     };
     synth.speak(message);
   };
@@ -131,8 +136,11 @@ function App() {
         });
         console.log(transcript);
       };
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
       recognition.stop();
-      setGif(false);
     };
     synth.speak(message);
   };
@@ -145,6 +153,7 @@ function App() {
       box2.current.className = "box";
       box3.current.className = "box";
       card.current.className = "card";
+      submit.current.style.backgroundColor = "#efeeee";
     } else {
       setMode(true);
       document.body.style.backgroundColor = "#1d1c19";
@@ -153,6 +162,7 @@ function App() {
       box2.current.className = "darkbox";
       box3.current.className = "darkbox";
       card.current.className = "card darkcard";
+      submit.current.style.backgroundColor = "#1d1c19";
     }
   };
   return (
@@ -227,7 +237,7 @@ function App() {
         <div className="col-lg-1 col-md-1"></div>
       </div>
       {load ? (
-        <div className="row">
+        <div className="row" ref="submit">
           <div className="col-lg-1 col-md-1"></div>
           <div className="col-md-10 col-lg-10">
             <div className="card">
