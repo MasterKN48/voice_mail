@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "./app.css";
+import Switch from "react-switch";
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -22,6 +24,7 @@ function App() {
   const speakHandleBody = () => {
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Body");
+    message.lang = "hi-IN";
     message.onend = function(event) {
       console.log("Finished in " + event.elapsedTime + " seconds.");
       let recognition = new SpeechRecognition();
@@ -47,6 +50,7 @@ function App() {
     let message = new SpeechSynthesisUtterance(
       "Should i send mail now? Reply in Yes or No"
     );
+    message.lang = "hi-IN";
     message.onend = event => {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
@@ -74,6 +78,7 @@ function App() {
   const speakHandleSubject = () => {
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Subject Line");
+    message.lang = "hi-IN";
     message.onend = function(event) {
       console.log("Finished in " + event.elapsedTime + " seconds.");
       let recognition = new SpeechRecognition();
@@ -96,12 +101,13 @@ function App() {
   const speakHandleEmail = () => {
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about receiver email");
+    message.lang = "hi-IN";
     message.onend = function(event) {
       console.log("Finished in " + event.elapsedTime + " seconds.");
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
-      console.log("listening for subject");
+      console.log("listening for receiver email");
       recognition.onresult = e => {
         const current = e.resultIndex;
         const transcript = e.results[current][0].transcript;
@@ -117,63 +123,81 @@ function App() {
     synth.speak(message);
   };
   return (
-    <div className="conainter card mt-5 ml-5 mr-5">
-      <h6>Click on Fields to talk,and reply after each beap </h6>
-      <h1>
-        Voice Email<sup style={{ fontSize: "10px" }}>beta 0.5</sup>
-      </h1>
-      <input
-        type="email"
-        name="email"
-        autoFocus
-        readOnly
-        x-webkit-speech="true"
-        placeholder="Enter Email"
-        defaultValue={data.email}
-        onClick={speakHandleEmail}
-      ></input>
-      <br />
-      <input
-        type="text"
-        name="subject"
-        x-webkit-speech="true"
-        readOnly
-        placeholder="Enter Subject"
-        defaultValue={data.subject}
-        onClick={speakHandleSubject}
-      ></input>
-      <br />
-      <textarea
-        type="text"
-        rows="5"
-        readOnly
-        x-webkit-speech="true"
-        name="body"
-        placeholder="Enter Body"
-        defaultValue={data.body}
-        onClick={speakHandleBody}
-      ></textarea>
-      <br />
-      <button id="btn" className="btn btn-success" onClick={handleClick}>
-        Submit
-      </button>
-      <br />
+    <>
+      <div className="row">
+        <div className="col-lg-1 col-md-1"></div>
+        <div className="col-lg-10 col-md-10">
+          <div className="card " align="center">
+            <h1>
+              Voice Email<sup style={{ fontSize: "10px" }}>beta 0.5</sup>{" "}
+              &nbsp;&nbsp;&nbsp;
+              <Switch onChange={console.log("dark mode")} checked={true} />
+            </h1>
+            <h6>Click on Fields to talk,and reply after each beap </h6>
+            <input
+              type="email"
+              name="email"
+              autoFocus
+              className="box"
+              readOnly
+              x-webkit-speech="true"
+              placeholder="Enter Email"
+              defaultValue={data.email}
+              onClick={speakHandleEmail}
+            ></input>
+            <br />
+            <input
+              type="text"
+              name="subject"
+              x-webkit-speech="true"
+              readOnly
+              className="box"
+              placeholder="Enter Subject"
+              defaultValue={data.subject}
+              onClick={speakHandleSubject}
+            ></input>
+            <br />
+            <textarea
+              type="text"
+              rows="5"
+              readOnly
+              className="box"
+              x-webkit-speech="true"
+              name="body"
+              placeholder="Enter Body"
+              defaultValue={data.body}
+              onClick={speakHandleBody}
+            ></textarea>
+            <br />
+            <button id="btn" className="btns btn-success" onClick={handleClick}>
+              Submit
+            </button>
+          </div>
+        </div>
+        <div className="col-lg-1 col-md-1"></div>
+      </div>
       {load ? (
-        <div>
-          <h6 className="alert-success">
-            Your Email will be send when backend is ready,rest your data is
-            here:{" "}
-          </h6>
-          Email:{data.email}
-          <hr />
-          Subject:{data.subject}
-          <hr />
-          Body:{data.body}
+        <div className="row">
+          <div className="col-lg-1 col-md-1"></div>
+          <div className="col-md-10 col-lg-10">
+            <div className="card">
+              <h6 className="alert-success">
+                Your Email will be send when backend is ready,rest your data is
+                here:{" "}
+              </h6>
+              Email:{data.email}
+              <hr />
+              Subject:{data.subject}
+              <hr />
+              Body:{data.body}
+            </div>
+          </div>
+          <div className="col-md-1 col-lg-1"></div>
         </div>
       ) : (
         ""
       )}
-    </div>
+    </>
   );
 }
 
