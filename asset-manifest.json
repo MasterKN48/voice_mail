@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/voice_mail/static/css/main.873642cf.chunk.css",
+    "main.js": "/voice_mail/static/js/main.c2b34c2e.chunk.js",
+    "main.js.map": "/voice_mail/static/js/main.c2b34c2e.chunk.js.map",
+    "runtime-main.js": "/voice_mail/static/js/runtime-main.b60e3e42.js",
+    "runtime-main.js.map": "/voice_mail/static/js/runtime-main.b60e3e42.js.map",
+    "static/js/2.3da0a82f.chunk.js": "/voice_mail/static/js/2.3da0a82f.chunk.js",
+    "static/js/2.3da0a82f.chunk.js.map": "/voice_mail/static/js/2.3da0a82f.chunk.js.map",
+    "index.html": "/voice_mail/index.html",
+    "precache-manifest.c486ac29c7bfbabd1a92cb8bb6ddb7cd.js": "/voice_mail/precache-manifest.c486ac29c7bfbabd1a92cb8bb6ddb7cd.js",
+    "service-worker.js": "/voice_mail/service-worker.js",
+    "static/css/main.873642cf.chunk.css.map": "/voice_mail/static/css/main.873642cf.chunk.css.map",
+    "static/js/2.3da0a82f.chunk.js.LICENSE": "/voice_mail/static/js/2.3da0a82f.chunk.js.LICENSE",
+    "static/media/abc.gif": "/voice_mail/static/media/abc.314e8d99.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b60e3e42.js",
+    "static/js/2.3da0a82f.chunk.js",
+    "static/css/main.873642cf.chunk.css",
+    "static/js/main.c2b34c2e.chunk.js"
+  ]
+}
