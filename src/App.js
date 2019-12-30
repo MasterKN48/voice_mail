@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./app.css";
 import Switch from "react-switch";
-
+import GIF from "./abc.gif";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -17,6 +17,7 @@ function App() {
   const box3 = useRef();
   const card = useRef();
   const [mode, setMode] = useState(false);
+  const [gif, setGif] = useState(false);
   const [load, setLoad] = useState(false);
   const handleClick = e => {
     e.preventDefault();
@@ -27,6 +28,7 @@ function App() {
     // console.log(upperCase);
   };
   const speakHandleBody = () => {
+    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Body");
     message.lang = "hi-IN";
@@ -46,11 +48,13 @@ function App() {
       };
       recognition.onend = () => {
         end();
+        setGif(false);
       };
     };
     synth.speak(message);
   };
   const end = () => {
+    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance(
       "Should i send mail now? Reply in Yes or No"
@@ -74,6 +78,7 @@ function App() {
         }
       };
       recognition.onend = () => {
+        setGif(false);
         document.getElementById("btn").click();
         return 0;
       };
@@ -81,6 +86,7 @@ function App() {
     synth.speak(message);
   };
   const speakHandleSubject = () => {
+    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Subject Line");
     message.lang = "hi-IN";
@@ -100,10 +106,12 @@ function App() {
         console.log(transcript);
       };
       recognition.stop();
+      setGif(false);
     };
     synth.speak(message);
   };
   const speakHandleEmail = () => {
+    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about receiver email");
     message.lang = "hi-IN";
@@ -124,6 +132,7 @@ function App() {
         console.log(transcript);
       };
       recognition.stop();
+      setGif(false);
     };
     synth.speak(message);
   };
@@ -163,6 +172,15 @@ function App() {
               <div className="row-1"></div>
             </div>
             <h6>Click on Fields to talk,and reply after each beap </h6>
+            {gif ? (
+              <img
+                style={{ height: "20vh", backgroundColor: "rgba(0,0,0,0.01)" }}
+                src={GIF}
+                alt="Listening gif"
+              />
+            ) : (
+              ""
+            )}
             <input
               ref={box1}
               type="email"
