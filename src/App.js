@@ -154,6 +154,7 @@ function App() {
       box3.current.className = "box";
       card.current.className = "card";
       submit.current.style.backgroundColor = "#efeeee";
+      submit.current.className = "card";
     } else {
       setMode(true);
       document.body.style.backgroundColor = "#1d1c19";
@@ -163,6 +164,7 @@ function App() {
       box3.current.className = "darkbox";
       card.current.className = "card darkcard";
       submit.current.style.backgroundColor = "#1d1c19";
+      submit.current.className = "card darkcard";
     }
   };
   return (
@@ -237,10 +239,10 @@ function App() {
         <div className="col-lg-1 col-md-1"></div>
       </div>
       {load ? (
-        <div className="row" ref="submit">
+        <div className="row">
           <div className="col-lg-1 col-md-1"></div>
           <div className="col-md-10 col-lg-10">
-            <div className="card">
+            <div className="card" ref="submit">
               <h6 className="alert-success">
                 Your Email will be send when backend is ready,rest your data is
                 here:{" "}
