@@ -16,7 +16,7 @@ function App() {
   const box2 = useRef();
   const box3 = useRef();
   const card = useRef();
-  const submit = useRef();
+  const sub = useRef();
   const [mode, setMode] = useState(false);
   const [gif, setGif] = useState(false);
   const [load, setLoad] = useState(false);
@@ -153,8 +153,7 @@ function App() {
       box2.current.className = "box";
       box3.current.className = "box";
       card.current.className = "card";
-      submit.current.style.backgroundColor = "#efeeee";
-      submit.current.className = "card";
+      sub.current.className = "card";
     } else {
       setMode(true);
       document.body.style.backgroundColor = "#1d1c19";
@@ -163,8 +162,7 @@ function App() {
       box2.current.className = "darkbox";
       box3.current.className = "darkbox";
       card.current.className = "card darkcard";
-      submit.current.style.backgroundColor = "#1d1c19";
-      submit.current.className = "card darkcard";
+      sub.current.className = "card darkcard";
     }
   };
   return (
@@ -242,7 +240,7 @@ function App() {
         <div className="row">
           <div className="col-lg-1 col-md-1"></div>
           <div className="col-md-10 col-lg-10">
-            <div className="card" ref="submit">
+            <div className="card" ref={sub}>
               <h6 className="alert-success">
                 Your Email will be send when backend is ready,rest your data is
                 here:{" "}
