@@ -23,26 +23,32 @@ function App() {
   const [mode, setMode] = useState(false);
   const [gif, setGif] = useState(false);
   const [load, setLoad] = useState(false);
+  const [success, setSuccess] = useState(false);
   const handleClick = e => {
     e.preventDefault();
     setGif(false);
-    if (1 !== 1) {
-      setLoad(false);
-      console.log(data);
-      alert("All Details are not filled");
-    } else {
-      console.log("sending");
-      setLoad(true);
-      var params = new URLSearchParams();
-      params.append("email", data.email);
-      params.append("from", data.from);
-      params.append("body", data.body);
-      params.append("subject", data.subject);
-      axios
-        .post("https://letsgowithmkn.000webhostapp.com/test.php", params)
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-    }
+    console.log("sending");
+    setLoad(false);
+    var params = new URLSearchParams();
+    params.append("email", data.email);
+    params.append("from", data.from);
+    params.append("body", data.body);
+    params.append("subject", data.subject);
+    axios
+      .post("https://letsgowithmkn.000webhostapp.com/test.php", params)
+      .then(res => {
+        if (res.data.status === "Yes") {
+          setLoad(true);
+          setSuccess(true);
+          sub.current.focus();
+        }
+      })
+      .catch(err => {
+        setLoad(true);
+        setSuccess(false);
+        sub.current.focus();
+        console.log(err);
+      });
     // const upperCase =
     //   transcript.charAt(0).toUpperCase() + transcript.substring(1);
     // console.log(upperCase);
@@ -55,7 +61,9 @@ function App() {
       console.log("Finished in " + event.elapsedTime + " seconds.");
       let recognition = new SpeechRecognition();
       recognition.start();
-      setGif(true);
+      recognition.onstart = () => {
+        setGif(true);
+      };
       console.log("listening for body");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -64,10 +72,10 @@ function App() {
           ...data,
           body: transcript + ""
         });
-        console.log(transcript);
-        setGif(false);
       };
+
       recognition.onend = () => {
+        setGif(false);
         end();
       };
     };
@@ -83,12 +91,13 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
-      setGif(true);
+      recognition.onstart = () => {
+        setGif(true);
+      };
       console.log("listening for body");
       recognition.onresult = e => {
         const current = e.resultIndex;
         const transcript = e.results[current][0].transcript;
-        console.log(transcript);
         let str = transcript + "";
         if (str.includes("yes")) {
           console.log(data, "sending mail...");
@@ -116,7 +125,9 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
-      setGif(true);
+      recognition.onstart = () => {
+        setGif(true);
+      };
       console.log("listening for subject");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -125,15 +136,15 @@ function App() {
           ...data,
           subject: transcript + ""
         });
-        console.log(transcript);
-        setGif(false);
       };
-      recognition.stop();
-      setGif(false);
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
     };
     synth.speak(message);
   };
-  const speakHandleEmail = () => {
+  const speakHandleEmailTo = () => {
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about receiver email");
     message.lang = "hi-IN";
@@ -142,7 +153,9 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
-      setGif(true);
+      recognition.onstart = () => {
+        setGif(true);
+      };
       console.log("listening for receiver email");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -152,11 +165,11 @@ function App() {
           ...data,
           email: email.replace(/\s/g, "").toLowerCase()
         });
-        console.log(transcript);
-        setGif(false);
       };
-      setGif(false);
-      recognition.stop();
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
     };
     synth.speak(message);
   };
@@ -170,6 +183,9 @@ function App() {
       let recognition = new SpeechRecognition();
       recognition.lang = "en-GB";
       recognition.start();
+      recognition.onstart = () => {
+        setGif(true);
+      };
       console.log("listening for your email");
       recognition.onresult = e => {
         const current = e.resultIndex;
@@ -179,10 +195,11 @@ function App() {
           ...data,
           from: email.replace(/\s/g, "").toLowerCase()
         });
-        console.log(transcript);
       };
-      recognition.stop();
-      setGif(false);
+      recognition.onend = () => {
+        setGif(false);
+        recognition.stop();
+      };
     };
     synth.speak(message);
   };
@@ -196,6 +213,9 @@ function App() {
       box3.current.className = "box";
       box4.current.className = "box";
       card.current.className = "card";
+      if (load) {
+        sub.current.className = "card";
+      }
     } else {
       setMode(true);
       document.body.style.backgroundColor = "#1d1c19";
@@ -205,6 +225,9 @@ function App() {
       box3.current.className = "darkbox";
       box4.current.className = "darkbox";
       card.current.className = "card darkcard";
+      if (load) {
+        sub.current.className = "card darkcard";
+      }
     }
   };
   return (
@@ -213,9 +236,7 @@ function App() {
         <div className="col-lg-1 col-md-1"></div>
         <div className="col-lg-10 col-md-10">
           <div className="card" ref={card} align="center">
-            <h1>
-              Voice Email<sup style={{ fontSize: "10px" }}>beta 0.5</sup>{" "}
-            </h1>
+            <h1>Voice Email</h1>
             <div className="col">
               <div className="row-1"></div>
               <div className="row-10">
@@ -238,6 +259,8 @@ function App() {
               type="email"
               name="from"
               autoFocus
+              required
+              readOnly
               className="box"
               x-webkit-speech="true"
               placeholder="Enter Your Email"
@@ -249,12 +272,13 @@ function App() {
               ref={box1}
               type="email"
               name="email"
-              autoFocus
+              readOnly
               className="box"
               x-webkit-speech="true"
+              required
               placeholder="Enter Receiver Email"
               defaultValue={data.email}
-              onClick={speakHandleEmail}
+              onClick={speakHandleEmailTo}
             ></input>
             <br />
             <input
@@ -263,6 +287,8 @@ function App() {
               name="subject"
               x-webkit-speech="true"
               className="box"
+              readOnly
+              required
               placeholder="Enter Subject"
               defaultValue={data.subject}
               onClick={speakHandleSubject}
@@ -275,36 +301,61 @@ function App() {
               className="box"
               x-webkit-speech="true"
               name="body"
+              readOnly
+              required
               placeholder="Enter Body"
               defaultValue={data.body}
               onClick={speakHandleBody}
             ></textarea>
             <br />
-            <button id="btn" className="btns btn-success" onClick={handleClick}>
-              Submit
-            </button>
+            <input
+              id="btn"
+              type="hidden"
+              className="btns btn-success"
+              onClick={handleClick}
+            ></input>
           </div>
         </div>
         <div className="col-lg-1 col-md-1"></div>
       </div>
       {load ? (
-        <div className="row">
-          <div className="col-lg-1 col-md-1"></div>
-          <div className="col-md-10 col-lg-10">
-            <div className="card" ref={sub}>
-              <h6 className="alert-success">
-                Your Email will be send when backend is ready,rest your data is
-                here:{" "}
-              </h6>
-              Email:{data.email}
-              <hr />
-              Subject:{data.subject}
-              <hr />
-              Body:{data.body}
+        success ? (
+          <div className="row">
+            <div className="col-lg-1 col-md-1"></div>
+            <div className="col-md-10 col-lg-10">
+              <div className="card" ref={sub}>
+                <h6 className="alert-success">Email Sent Successfully!</h6>
+                From:&nbsp;{data.from}
+                <hr />
+                To:&nbsp;{data.email}
+                <hr />
+                Subject:&nbsp;{data.subject}
+                <hr />
+                Body:&nbsp;{data.body}
+              </div>
             </div>
+            <div className="col-md-1 col-lg-1"></div>
           </div>
-          <div className="col-md-1 col-lg-1"></div>
-        </div>
+        ) : (
+          <div className="row">
+            <div className="col-lg-1 col-md-1"></div>
+            <div className="col-md-10 col-lg-10">
+              <div className="card" ref={sub}>
+                <h6 className="alert-success">
+                  There is error in sending email! Please check data.
+                </h6>
+                From:&nbsp;{data.from}
+                <hr />
+                To:&nbsp;{data.email}
+                <hr />
+                Subject:&nbsp;{data.subject}
+                <hr />
+                Body:&nbsp;{data.body}
+              </div>
+            </div>
+            <div className="col-md-1 col-lg-1"></div>
+          </div>
+        )
       ) : (
         ""
       )}
