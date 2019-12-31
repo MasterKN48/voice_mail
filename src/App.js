@@ -76,7 +76,32 @@ function App() {
 
       recognition.onend = () => {
         setGif(false);
-        end();
+        if (data.body === "") {
+          recognition.stop();
+          setLoad(true);
+          setSuccess(false);
+          sub.current.focus();
+        }
+        if (data.email === "") {
+          recognition.stop();
+          setLoad(true);
+          setSuccess(false);
+          sub.current.focus();
+        }
+        if (data.subject === "") {
+          recognition.stop();
+          setLoad(true);
+          setSuccess(false);
+          sub.current.focus();
+        }
+        if (data.from === "") {
+          recognition.stop();
+          setLoad(true);
+          setSuccess(false);
+          sub.current.focus();
+        } else {
+          end();
+        }
       };
     };
     synth.speak(message);
