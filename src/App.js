@@ -174,7 +174,6 @@ function App() {
     synth.speak(message);
   };
   const speakHandleEmailFrom = () => {
-    setGif(true);
     let synth = window.speechSynthesis;
     let message = new SpeechSynthesisUtterance("Tell me about Your email");
     message.lang = "hi-IN";
