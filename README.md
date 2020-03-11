@@ -2,7 +2,6 @@
 # Voice Mail
 *** Email service is disabled due to unethical use of this application, but can enabled when needed by me only.***
 
-currently in beta
  
 url: [https://masterkn48.github.io/voice_mail/](https://masterkn48.github.io/voice_mail/)
 
